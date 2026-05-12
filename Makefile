@@ -5,7 +5,7 @@ TARGET	= bin/geomist
 
 all:	$(TARGET)
 
-$(TARGET):	obj/main.o obj/display.o
+$(TARGET):	obj/main.o obj/display.o obj/demo.o
 	@mkdir -p bin
 	$(CC) -lm -lSDL3 -o $@ $^ $(LIBS)
 
