@@ -2,9 +2,10 @@
 #include <geomist/log.h>
 #include <stdlib.h>
 
-static SDL_Window		*window		= NULL;
-static SDL_DisplayMode	*disp_mode	= NULL;
-SDL_Renderer			*renderer	= NULL;
+static SDL_Window		*window		= nullptr;
+static SDL_DisplayMode	*disp_mode	= nullptr;
+SDL_Renderer			*renderer	= nullptr;
+SDL_GPUDevice			*device		= nullptr;
 size_t					disp_width  = 0;
 size_t					disp_height = 0;
 
@@ -48,15 +49,33 @@ int display_init(void)
 		goto CLEANUP;
 	}
 
+	if (!(SDL_SetRenderVSync(renderer, 1)))
+	{
+		Log(ERROR, "Failed to enable VSync: %s", SDL_GetError());
+		goto DESTROY;
+	}
+
 	SDL_DestroyProperties(props);
 	SDL_FRect bg_rect = {0, 0, disp_width, disp_height};
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+	if (!(device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, "gpu_render", NULL)))
+	{
+		SDL_Log("Failed to get GPU device: %s.", SDL_GetError());
+		goto DESTROY;
+	}
+
+	SDL_ClaimWindowForGPUDevice(device, window);
+	SDL_SetGPUSwapchainParameters(device, window, SDL_GPU_SWAPCHAINCOMPOSITION_SDR, SDL_GPU_PRESENTMODE_IMMEDIATE);
+
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	SDL_RenderFillRect(renderer, &bg_rect);
 	SDL_RenderPresent(renderer);
 	return EXIT_SUCCESS;
 
+DESTROY:
+	SDL_DestroyRenderer(renderer);
 CLEANUP:
 	SDL_DestroyProperties(props);
 	SDL_DestroyWindow(window);

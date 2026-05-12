@@ -9,7 +9,9 @@ void	display_close(void);
 extern size_t disp_width;
 extern size_t disp_height;
 
-extern SDL_Renderer *renderer;
+extern SDL_GPUDevice	*device;
+extern SDL_Renderer		*renderer;
+
 inline void pixel(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
