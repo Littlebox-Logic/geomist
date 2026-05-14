@@ -2,7 +2,7 @@
 #include <geomist/log.h>
 #include <stdlib.h>
 
-static SDL_Window		*window		= nullptr;
+SDL_Window				*window		= nullptr;
 static SDL_DisplayMode	*disp_mode	= nullptr;
 SDL_Renderer			*renderer	= nullptr;
 SDL_GPUDevice			*device		= nullptr;
@@ -86,6 +86,8 @@ QUIT:
 
 void display_close(void)
 {
+	SDL_ReleaseWindowFromGPUDevice(device, window);
+	SDL_DestroyGPUDevice(device);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();

@@ -2,9 +2,6 @@
 
 #include <stdint.h>
 
-extern const uint8_t ellipse_mist_vert[];
-extern const uint8_t mist_frag[];
-
 typedef struct
 {
 	float x, y, z;
@@ -19,5 +16,9 @@ typedef struct
 	float r, g, b;
 }	*Uniforms, _Uniforms;
 
-int shader_import(void);
-int shader_init(void);
+extern Uniforms uniforms;
+
+int		shader_import(void);
+int		shader_init(void);
+void	shader_commit(void);
+void	shader_close(void);

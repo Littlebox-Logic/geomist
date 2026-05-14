@@ -9,6 +9,7 @@ void	display_close(void);
 extern size_t disp_width;
 extern size_t disp_height;
 
+extern SDL_Window		*window;
 extern SDL_GPUDevice	*device;
 extern SDL_Renderer		*renderer;
 

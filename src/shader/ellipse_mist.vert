@@ -17,7 +17,7 @@ void main(void)
 {
 	float x = in_posi.x;
 	float y = in_posi.y;
-	gl_Position = vec4(x, y, 0.0, 1.0);
+	gl_Position = vec4(x / 2048, y / 1280, 0.0, 1.0);
 	out_color = vec4(ubo.r, ubo.g, ubo.b,
 		mod(pow(M_E, - (pow((x - ubo.x_c) / ubo.scale_x, 2.0) + pow((y - ubo.y_c) / ubo.scale_y, 2.0)) / 100000.0), 1.0));
 }
